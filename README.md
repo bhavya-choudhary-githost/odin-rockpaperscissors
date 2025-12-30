@@ -1,0 +1,1 @@
+This is the rockpaperscissors project for The Odin Project, in foundations, during js
