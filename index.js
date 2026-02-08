@@ -1,62 +1,39 @@
-function getComputerChoice(){
-    const choice = Math.floor(Math.random()*99)
-    
-    switch(true){
-        case (choice < 33):
-            return "rock";
-            break;
-        case(choice < 66):
-            return "paper";
-            break;
-        default:
-            return "scissor";
-        }
-    }
+let humanScore = 0;
+let computerScore = 0;
 
-function getHumanChoice(){
-    const choice = window.prompt("rock,paper or scissors?").trim().toLowerCase()
+const resultsDiv = document.querySelector('#results');
 
-    switch(choice){
-        case "rock":
-            return "rock";
-
-        case "paper":
-            return "paper";
-
-        case "scissor":
-            return "scissor";
-            
-        case "scissors":
-            return "scissor";
-        
-        default:
-            window.alert("Invalid Input");
-            return getHumanChoice();
-    }
+function getComputerChoice() {
+    const randomNum = Math.floor(Math.random() * 99);
+    if (randomNum < 33) return "rock";
+    if (randomNum < 66) return "paper";
+    return "scissors";
 }
 
-function playRound(humanChoice, computerChoice){
-    if (humanChoice === "rock" && computerChoice === "scissor" ||
-        humanChoice === "paper" && computerChoice === "rock" ||
-        humanChoice === "scissor" && computerChoice === "paper")
-                
-        {humanScore++;}
+function playRound(humanChoice) {
+    const computerChoice = getComputerChoice();
+    let roundResult = "";
 
-    else if (humanChoice == computerChoice){}
-            
-    else {
+    if (humanChoice === computerChoice) {
+        roundResult = `Tie! Both picked ${humanChoice}.`;
+    } else if (
+        (humanChoice === "rock" && computerChoice === "scissors") ||
+        (humanChoice === "paper" && computerChoice === "rock") ||
+        (humanChoice === "scissors" && computerChoice === "paper")
+    ) {
+        humanScore++;
+        roundResult = `Win! ${humanChoice} beats ${computerChoice}.`;
+    } else {
         computerScore++;
-            }
-}
-
-function playGame(){
-    for(let i = 0; i < 5; i++){
-        let humanSelection = getHumanChoice(), computerSelection = getComputerChoice();
-        playRound(humanSelection, computerSelection)
+        roundResult = `Loss! ${computerChoice} beats ${humanChoice}.`;
     }
+
+    resultsDiv.innerHTML = `
+        <p>${roundResult}</p>
+        <p>Score: ${humanScore} - ${computerScore}</p>
+    `;
 }
 
-let humanScore = 0, computerScore = 0;
-playGame()
-
-console.log(`Your Score: ${humanScore}\nComputerScore: ${computerScore}`)
+document.querySelector('#rock').addEventListener('click', () => playRound('rock'));
+document.querySelector('#paper').addEventListener('click', () => playRound('paper'));
+document.querySelector('#scissors').addEventListener('click', () => playRound('scissors'));
